@@ -3,8 +3,12 @@ import React, { useState } from 'react';
 import api from './services/api';
 // import { Container } from './styles';
 
+import GlobalStyle from './styles/global';
+import Title from './components/Title';
+import Form from './components/Form';
+import Weather from './components/Weather';
+
 const API_KEY = '2cd1dd71b409212aaebe0070340661db';
-const COUNTRY = 'BR';
 const UNITS = 'metric'; // celsius
 
 export default function App() {
@@ -15,16 +19,20 @@ export default function App() {
 
         const city = e.target.elements.city.value;
 
-        const response = await api.get(
-            `/weather?q=${city},${COUNTRY}&appid=${API_KEY}&units=${UNITS}`
-        );
+        const response = await api.get('data/2.5/weather', {
+            params: {
+                q: `${city},BR`,
+                units: UNITS,
+                appid: API_KEY,
+            },
+        });
 
         setWeather({
             temperature: Math.floor(response.data.main.temp),
             city: response.data.name,
             country: response.data.sys.country,
-            temp_min: response.data.main.temp_min,
-            temp_max: response.data.main.temp_max,
+            temp_min: Math.floor(response.data.main.temp_min),
+            temp_max: Math.floor(response.data.main.temp_max),
             humidity: response.data.main.humidity,
             description: response.data.weather[0].description,
         });
@@ -34,35 +42,18 @@ export default function App() {
 
     return (
         <>
-            <form onSubmit={getWeather}>
-                <input
-                    type="text"
-                    name="city"
-                    placeholder="Enter city name here"
-                />
-                <button type="submit">Get Weather</button>
-            </form>
-            <div>
-                {weather.city && weather.country && (
-                    <p>
-                        {weather.city}, {weather.country}
-                    </p>
-                )}
-
-                {weather.temperature && weather.description && (
-                    <p>
-                        {weather.temperature} &#8451; {weather.description}
-                    </p>
-                )}
-
-                {weather.temp_min && weather.temp_max && (
-                    <p>
-                        {weather.temp_min}&#730; {weather.temp_max}&#730;
-                    </p>
-                )}
-
-                {weather.humidity && <p>Humidity: {weather.humidity}</p>}
-            </div>
+            <GlobalStyle />
+            <Title />
+            <Form getWeather={getWeather} />
+            <Weather
+                temperature={weather.temperature}
+                city={weather.city}
+                country={weather.country}
+                temp_min={weather.temp_min}
+                temp_max={weather.temp_max}
+                humidity={weather.humidity}
+                description={weather.description}
+            />
         </>
     );
 }
