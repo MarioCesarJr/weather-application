@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { Container } from './styles';
+import { Container } from './styles';
 
 export default function Weather({
     city,
@@ -12,7 +12,7 @@ export default function Weather({
     humidity,
 }) {
     return (
-        <div>
+        <Container>
             {city && country && (
                 <p>
                     {city}, {country}
@@ -32,7 +32,7 @@ export default function Weather({
             )}
 
             {humidity && <p>Humidity: {humidity}</p>}
-        </div>
+        </Container>
     );
 }
 
