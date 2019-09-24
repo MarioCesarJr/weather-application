@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { MdArrowDownward, MdArrowUpward } from 'react-icons/md';
 import { Container } from './styles';
 
 export default function Weather({
@@ -12,27 +13,38 @@ export default function Weather({
     humidity,
 }) {
     return (
-        <Container>
-            {city && country && (
-                <p>
-                    {city}, {country}
-                </p>
-            )}
+        <>
+            {city && (
+                <Container id="id01">
+                    {city && country && (
+                        <p className="location">
+                            {city}, {country}
+                        </p>
+                    )}
 
-            {temperature && description && (
-                <p>
-                    {temperature} &#8451; {description}
-                </p>
-            )}
+                    {temperature && description && (
+                        <p className="temperature">
+                            {temperature}&#8451; {description}
+                        </p>
+                    )}
 
-            {temp_min && temp_max && (
-                <p>
-                    {temp_min}&#730; {temp_max}&#730;
-                </p>
-            )}
+                    {temp_min && temp_max && (
+                        <p className="temp_min_max">
+                            <MdArrowDownward color="#F7A432" size={20} />
+                            {temp_min}&#730;
+                            <MdArrowUpward color="#F7A432" size={20} />
+                            {temp_max}&#730;
+                        </p>
+                    )}
 
-            {humidity && <p>Humidity: {humidity}</p>}
-        </Container>
+                    {humidity && (
+                        <p className="humidity">
+                            Humidity: <span>{humidity}%</span>
+                        </p>
+                    )}
+                </Container>
+            )}
+        </>
     );
 }
 

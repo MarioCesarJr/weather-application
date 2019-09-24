@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-
+import Loader from 'react-loader-spinner';
 import api from './services/api';
-// import { Container } from './styles';
 
 import GlobalStyle from './styles/global';
 import Title from './components/Title';
@@ -13,31 +12,45 @@ const UNITS = 'metric'; // celsius
 
 export default function App() {
     const [weather, setWeather] = useState({});
+    const [loading, setLoading] = useState(false);
+
+    const loadStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 50,
+    };
 
     async function getWeather(e) {
         e.preventDefault();
 
         const city = e.target.elements.city.value;
 
-        const response = await api.get('data/2.5/weather', {
-            params: {
-                q: `${city},BR`,
-                units: UNITS,
-                appid: API_KEY,
-            },
-        });
+        try {
+            setLoading(true);
 
-        setWeather({
-            temperature: Math.floor(response.data.main.temp),
-            city: response.data.name,
-            country: response.data.sys.country,
-            temp_min: Math.floor(response.data.main.temp_min),
-            temp_max: Math.floor(response.data.main.temp_max),
-            humidity: response.data.main.humidity,
-            description: response.data.weather[0].description,
-        });
+            const response = await api.get('data/2.5/weather', {
+                params: {
+                    q: `${city},BR`,
+                    units: UNITS,
+                    appid: API_KEY,
+                },
+            });
 
-        console.log(response.data);
+            setWeather({
+                temperature: Math.floor(response.data.main.temp),
+                city: response.data.name,
+                country: response.data.sys.country,
+                temp_min: Math.floor(response.data.main.temp_min),
+                temp_max: Math.floor(response.data.main.temp_max),
+                humidity: response.data.main.humidity,
+                description: response.data.weather[0].description,
+            });
+            console.log(response.data);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -45,15 +58,28 @@ export default function App() {
             <GlobalStyle />
             <Title />
             <Form getWeather={getWeather} />
-            <Weather
-                temperature={weather.temperature}
-                city={weather.city}
-                country={weather.country}
-                temp_min={weather.temp_min}
-                temp_max={weather.temp_max}
-                humidity={weather.humidity}
-                description={weather.description}
-            />
+
+            {loading ? (
+                <div className="loading">
+                    <Loader
+                        style={loadStyle}
+                        type="TailSpin"
+                        color="#fff"
+                        width={30}
+                        height={30}
+                    />
+                </div>
+            ) : (
+                <Weather
+                    temperature={weather.temperature}
+                    city={weather.city}
+                    country={weather.country}
+                    temp_min={weather.temp_min}
+                    temp_max={weather.temp_max}
+                    humidity={weather.humidity}
+                    description={weather.description}
+                />
+            )}
         </>
     );
 }

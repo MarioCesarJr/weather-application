@@ -8,14 +8,14 @@ export const Container = styled.div`
 
     form {
         position: relative;
-        width: 200px;
+        width: 380px;
 
         input {
             background: #fff;
             border: 0;
             border-radius: 2px;
             height: 40px;
-            padding: 0 15px;
+            padding: 15px 35px 15px 15px;
             width: 100%;
         }
 
