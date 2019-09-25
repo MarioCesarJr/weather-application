@@ -6,7 +6,7 @@ import { Container } from './styles';
 export default function Form({ getWeather }) {
     return (
         <Container>
-            <form onSubmit={getWeather}>
+            <form onSubmit={getWeather} autoComplete="off">
                 <input
                     type="text"
                     name="city"

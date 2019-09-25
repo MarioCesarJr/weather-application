@@ -17,7 +17,7 @@ export default function App() {
     const loadStyle = {
         display: 'flex',
         justifyContent: 'center',
-        marginTop: 50,
+        marginTop: 65,
     };
 
     async function getWeather(e) {
@@ -44,8 +44,8 @@ export default function App() {
                 temp_max: Math.floor(response.data.main.temp_max),
                 humidity: response.data.main.humidity,
                 description: response.data.weather[0].description,
+                icon: response.data.weather[0].icon,
             });
-            console.log(response.data);
         } catch (err) {
             console.log(err);
         } finally {
@@ -78,6 +78,7 @@ export default function App() {
                     temp_max={weather.temp_max}
                     humidity={weather.humidity}
                     description={weather.description}
+                    icon={weather.icon}
                 />
             )}
         </>
