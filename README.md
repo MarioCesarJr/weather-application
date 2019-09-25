@@ -25,3 +25,7 @@ git clone https://github.com/MarioCesarJr/weather-application.git
 ```
 
 Open <http://localhost:3000> to view it in the browser.
+
+## Author
+
+-   [Mário Cesar de Souza Junior](https://github.com/MarioCesarJr)
